@@ -1,34 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { React, useState, useEffect } from "react"
+import LoggedOut from "./components/LoggedOut"
+import LoggedIn from "./components/LoggedIn"
+import userService from "./services/login"
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [user, setUser] = useState(null)
+
+  const runOnce = []
+  useEffect(() => {
+    const loggedUserJson = window.localStorage.getItem("loggedUserJson")
+    if (loggedUserJson) {
+      const loggedUser = JSON.parse(loggedUserJson)
+      setUser(loggedUser)
+    }
+  }, runOnce)
+
+  const handleLogin = async () => {
+    const response = await userService.login({ username, password })
+    const loggedUser = response.data
+    window.localStorage.setItem("loggedUserJson", JSON.stringify(loggedUser))
+    setUser(loggedUser)
+  }
+
+  const handleLogout = async () => {
+    window.localStorage.removeItem("loggedUserJson")
+    setUser(null)
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      {user ? <LoggedIn user={user} handleLogout={handleLogout} /> : (
+        <LoggedOut
+          setUsername={setUsername}
+          setPassword={setPassword}
+          handleLogin={handleLogin}
+        />
+      )}
+    </div>
   )
 }
 
