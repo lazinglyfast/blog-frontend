@@ -1,11 +1,11 @@
 import React from "react"
 
-const BlogList = ({ blogs }) => {
+const BlogList = ({ blogs, handleUpdate, handleRemove }) => {
   const items = blogs.map((b) => (
     <li key={b.id}>
-      {`${b.title} by ${b.author} (${b.likes} likes)`}
-      <button type="button" onClick={() => console.log(b.title)}>like</button>
-      <button type="button" onClick={() => console.log(b.author)}>delete</button>
+      {`${b.title} by ${b.author} (created by ${b.creator ? b.creator.name : "unknown"}) (${b.likes} likes)`}
+      <button type="button" onClick={() => handleUpdate(b)}>like</button>
+      <button type="button" onClick={() => handleRemove(b)}>remove</button>
     </li>
   ))
 
