@@ -14,9 +14,6 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
   const [message, setMessage] = useState(null)
-  const [title, setTitle] = useState(null)
-  const [author, setAuthor] = useState(null)
-  const [url, setUrl] = useState(null)
 
   const runOnlyOnceAtApplicationStart = []
 
@@ -62,13 +59,7 @@ const App = () => {
     notify({ text: "logged out successfully", type: "success" })
   }
 
-  const handleCreate = async () => {
-    const blog = {
-      title,
-      author,
-      url,
-      likes: 0,
-    }
+  const handleCreate = async (blog) => {
     const newBlog = await blogService.create(blog, user)
     setBlogs(blogs.concat(newBlog))
     notify({ text: `a new blog "${newBlog.title}" by "${newBlog.author}" added`, type: "success" })
@@ -118,9 +109,6 @@ const App = () => {
         <LoggedIn
           user={user}
           handleLogout={handleLogout}
-          setTitle={setTitle}
-          setAuthor={setAuthor}
-          setUrl={setUrl}
           blogs={blogs}
           handleCreate={handleCreate}
           handleUpdate={handleUpdate}

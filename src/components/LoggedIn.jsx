@@ -1,14 +1,11 @@
 import React from "react"
-import NewBlog from "./NewBlog"
+import BlogForm from "./BlogForm"
 import BlogList from "./BlogList"
 import Toggleable from "./Toggleable"
 
 const LoggedIn = ({
   user,
   handleLogout,
-  setTitle,
-  setAuthor,
-  setUrl,
   blogs,
   handleCreate,
   handleUpdate,
@@ -22,12 +19,7 @@ const LoggedIn = ({
     <button type="button" onClick={handleLogout}>logout</button>
 
     <Toggleable buttonLabel="new note">
-      <NewBlog
-        setTitle={setTitle}
-        setAuthor={setAuthor}
-        setUrl={setUrl}
-        handleCreate={handleCreate}
-      />
+      <BlogForm handleCreate={handleCreate} />
     </Toggleable>
 
     <BlogList
