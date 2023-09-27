@@ -1,4 +1,5 @@
 import { React, useState } from "react"
+import PropTypes from "prop-types"
 
 const BlogItem = ({ blog, handleUpdate, handleRemove }) => {
   const [viewDetails, setViewDetails] = useState(false)
@@ -35,6 +36,20 @@ const BlogItem = ({ blog, handleUpdate, handleRemove }) => {
       <button type="button" onClick={() => handleRemove(blog)}>remove</button>
     </div>
   )
+}
+
+BlogItem.propTypes = {
+  blog: PropTypes.shape({
+    title: PropTypes.string,
+    url: PropTypes.string,
+    likes: PropTypes.number,
+    author: PropTypes.string,
+    creator: PropTypes.shape({
+      name: PropTypes.string,
+    }),
+  }).isRequired,
+  handleUpdate: PropTypes.func.isRequired,
+  handleRemove: PropTypes.func.isRequired,
 }
 
 export default BlogItem

@@ -1,4 +1,9 @@
-import { React, useState, useEffect } from "react"
+import {
+  React,
+  useState,
+  useEffect,
+  useRef,
+} from "react"
 import LoggedOut from "./components/LoggedOut"
 import LoggedIn from "./components/LoggedIn"
 import Notification from "./components/Notification"
@@ -59,10 +64,12 @@ const App = () => {
     notify({ text: "logged out successfully", type: "success" })
   }
 
+  const toggleableRef = useRef()
   const handleCreate = async (blog) => {
     const newBlog = await blogService.create(blog, user)
     setBlogs(blogs.concat(newBlog))
     notify({ text: `a new blog "${newBlog.title}" by "${newBlog.author}" added`, type: "success" })
+    toggleableRef.current.hide()
   }
 
   const handleUpdate = async (blog) => {
@@ -119,6 +126,7 @@ const App = () => {
           handleCreate={handleCreate}
           handleUpdate={handleUpdate}
           handleRemove={handleRemove}
+          toggleableRef={toggleableRef}
         />
       ) : (
         <LoggedOut

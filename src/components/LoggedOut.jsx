@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from "prop-types"
 
 const LoggedOut = ({
   setUsername,
@@ -24,5 +25,11 @@ const LoggedOut = ({
     <button type="button" onClick={handleLogin}>login</button>
   </>
 )
+
+LoggedOut.propTypes = {
+  setUsername: PropTypes.func.isRequired,
+  setPassword: PropTypes.func.isRequired,
+  handleLogin: PropTypes.func.isRequired,
+}
 
 export default LoggedOut
