@@ -89,6 +89,12 @@ const App = () => {
   }
 
   const handleRemove = async (blog) => {
+    const warning = `Are you sure you want to remove "${blog.title}" by ${blog.author}?`
+    // eslint-disable-next-line no-alert
+    if (!window.confirm(warning)) {
+      return
+    }
+
     try {
       await blogService.remove(blog, user)
       const filteredBlogs = blogs.filter((b) => b.id !== blog.id)
