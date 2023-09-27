@@ -1,4 +1,4 @@
-import React from "react"
+import { React, useState } from "react"
 import BlogForm from "./BlogForm"
 import BlogList from "./BlogList"
 import Toggleable from "./Toggleable"
@@ -10,26 +10,35 @@ const LoggedIn = ({
   handleCreate,
   handleUpdate,
   handleRemove,
-}) => (
-  <div>
-    <h2>
-      blogs
-    </h2>
+}) => {
+  const [ascending, setAscending] = useState(true)
+  const sortedBlogs = blogs.sort((ba, bb) => bb.likes - ba.likes)
+  if (ascending) {
+    sortedBlogs.reverse()
+  }
+  const label = ascending ? "most likes first" : "least likes first"
+  return (
     <div>
-      {`${user.username} logged in`}
-      <button type="button" onClick={handleLogout}>logout</button>
+      <h2>
+        blogs
+      </h2>
+      <div>
+        {`${user.username} logged in`}
+        <button type="button" onClick={handleLogout}>logout</button>
+      </div>
+
+      <Toggleable buttonLabel="create new blog">
+        <BlogForm handleCreate={handleCreate} />
+      </Toggleable>
+
+      <button type="button" onClick={() => setAscending(!ascending)}>{label}</button>
+
+      <BlogList
+        blogs={sortedBlogs}
+        handleUpdate={handleUpdate}
+        handleRemove={handleRemove}
+      />
     </div>
-
-    <Toggleable buttonLabel="create new blog">
-      <BlogForm handleCreate={handleCreate} />
-    </Toggleable>
-
-    <BlogList
-      blogs={blogs}
-      handleUpdate={handleUpdate}
-      handleRemove={handleRemove}
-    />
-  </div >
-)
-
+  )
+}
 export default LoggedIn
