@@ -6,7 +6,7 @@ const Toggleable = ({ children, buttonLabel }) => {
   const show = {}
 
   return (
-    <div>
+    <div style={{ marginBottom: 5, marginTop: 5 }}>
       <div style={visible ? show : hide}>
         {children}
       </div>

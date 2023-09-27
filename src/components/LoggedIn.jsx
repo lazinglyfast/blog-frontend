@@ -15,10 +15,12 @@ const LoggedIn = ({
     <h2>
       blogs
     </h2>
-    {`${user.username} logged in `}
-    <button type="button" onClick={handleLogout}>logout</button>
+    <div>
+      {`${user.username} logged in`}
+      <button type="button" onClick={handleLogout}>logout</button>
+    </div>
 
-    <Toggleable buttonLabel="new note">
+    <Toggleable buttonLabel="create new blog">
       <BlogForm handleCreate={handleCreate} />
     </Toggleable>
 
@@ -27,7 +29,7 @@ const LoggedIn = ({
       handleUpdate={handleUpdate}
       handleRemove={handleRemove}
     />
-  </div>
+  </div >
 )
 
 export default LoggedIn

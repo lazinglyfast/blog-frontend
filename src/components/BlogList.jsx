@@ -1,15 +1,17 @@
 import React from "react"
+import BlogItem from "./BlogItem"
 
 const BlogList = ({ blogs, handleUpdate, handleRemove }) => {
   const items = blogs.map((b) => (
-    <li key={b.id}>
-      {`${b.title} by ${b.author} (created by ${b.creator ? b.creator.name : "unknown"}) (${b.likes} likes)`}
-      <button type="button" onClick={() => handleUpdate(b)}>like</button>
-      <button type="button" onClick={() => handleRemove(b)}>remove</button>
-    </li>
+    <BlogItem
+      key={b.id}
+      blog={b}
+      handleUpdate={handleUpdate}
+      handleRemove={handleRemove}
+    />
   ))
 
-  return (<ul>{items}</ul>)
+  return (<div>{items}</div>)
 }
 
 export default BlogList
