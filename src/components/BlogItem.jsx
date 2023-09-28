@@ -15,7 +15,7 @@ const BlogItem = ({ blog, handleUpdate, handleRemove }) => {
   const creator = blog.creator ? blog.creator.name : "unknown"
   return (
     <div style={blogStyle}>
-      {`${blog.title} `}
+      {`${blog.title} by ${blog.author}`}
       <span style={viewDetails ? hide : show}>
         <button type="button" onClick={() => setViewDetails(true)}>view</button>
       </span>
@@ -25,9 +25,6 @@ const BlogItem = ({ blog, handleUpdate, handleRemove }) => {
         <div>
           {`likes ${blog.likes} `}
           <button type="button" onClick={() => handleUpdate(blog)}>like</button>
-        </div>
-        <div>
-          {blog.author}
         </div>
         <div>
           {`created by ${creator}`}

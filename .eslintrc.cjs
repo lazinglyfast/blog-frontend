@@ -11,12 +11,12 @@ module.exports = {
   },
   extends: [
     "airbnb",
-    // 'eslint:recommended',
-    // 'plugin:react/recommended',
-    // 'plugin:react/jsx-runtime',
-    // 'plugin:react-hooks/recommended',
+    // "eslint:recommended",
+    // "plugin:react/recommended",
+    // "plugin:react/jsx-runtime",
+    // "plugin:react-hooks/recommended",
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
+  ignorePatterns: ["dist", ".eslintrc.cjs"],
   overrides: [
     {
       env: {
@@ -34,8 +34,8 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  settings: { react: { version: '18.2' } },
-  plugins: ['react-refresh', "jest"],
+  settings: { react: { version: "18.2" } },
+  plugins: ["react-refresh", "jest"],
   rules: {
     // "react/prop-types": "off",
     semi: ["error", "never"],
@@ -52,6 +52,7 @@ module.exports = {
     "object-curly-spacing": ["error", "always"],
     "arrow-spacing": ["error", { "before": true, "after": true }],
     "react/react-in-jsx-scope": "off",
-    'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+    "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
   },
 }
