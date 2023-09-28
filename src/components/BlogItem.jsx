@@ -19,12 +19,12 @@ const BlogItem = ({ blog, handleUpdate, handleRemove }) => {
       <span style={viewDetails ? hide : show}>
         <button type="button" onClick={() => setViewDetails(true)}>view</button>
       </span>
-      <span style={viewDetails ? show : hide}>
-        <button type="button" onClick={() => setViewDetails(false)}>hide</button>
-        <div>{blog.url}</div>
-        <div>
+      <span style={viewDetails ? show : hide} data-testid="view">
+        <button type="button" id="view" onClick={() => setViewDetails(false)}>hide</button>
+        <div id="url">{blog.url}</div>
+        <div data-testid="likes">
           {`likes ${blog.likes} `}
-          <button type="button" onClick={() => handleUpdate(blog)}>like</button>
+          <button type="button" className="like" onClick={() => handleUpdate(blog)}>like</button>
         </div>
         <div>
           {`created by ${creator}`}

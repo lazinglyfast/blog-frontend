@@ -14,7 +14,7 @@ const BlogForm = ({ handleCreate }) => {
   }
 
   return (
-    <>
+    <div data-testid="container">
       <div>
         <label htmlFor="title">
           Title:
@@ -34,7 +34,7 @@ const BlogForm = ({ handleCreate }) => {
         </label>
       </div>
       <button type="button" onClick={() => handleCreate(blog)}>create</button>
-    </>
+    </div>
   )
 }
 
