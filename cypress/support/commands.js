@@ -23,3 +23,43 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+Cypress.Commands.add("login", () => {
+  cy.request({
+    method: "POST",
+    url: `${Cypress.env("backendUrl")}/api/login`,
+    body: {
+      username: "coala",
+      password: "bear",
+    },
+  }).then((response) => {
+    window.localStorage.setItem("loggedUserJson", JSON.stringify(response.body))
+  })
+})
+
+Cypress.Commands.add("createUser", () => {
+  const user = {
+    name: "oswald",
+    username: "coala",
+    password: "bear",
+  }
+  cy.request({
+    method: "POST",
+    url: `${Cypress.env("backendUrl")}/api/users`,
+    body: user,
+  })
+})
+
+Cypress.Commands.add("createBlog", () => {
+  cy.request({
+    method: "POST",
+    url: `${Cypress.env("backendUrl")}/api/blogs`,
+    headers: {
+      authorization: JSON.parse(window.localStorage.getItem("loggedUserJson")).token,
+    },
+    body: {
+      title: "this is an existing blog",
+      author: "teddy",
+      url: "http://i.exist/yeah",
+    },
+  })
+})

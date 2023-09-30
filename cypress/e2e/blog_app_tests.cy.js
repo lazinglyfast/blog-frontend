@@ -12,16 +12,7 @@ describe("Blog app", () => {
 
   describe("with an existing user", () => {
     beforeEach(() => {
-      const user = {
-        name: "oswald",
-        username: "coala",
-        password: "bear",
-      }
-      cy.request({
-        method: "POST",
-        url: `${Cypress.env("backendUrl")}/api/users`,
-        body: user,
-      })
+      cy.createUser()
     })
 
     it("User can successfully login with correct credentials", () => {
@@ -43,16 +34,7 @@ describe("Blog app", () => {
 
     describe("with a logged in user", () => {
       beforeEach(() => {
-        cy.request({
-          method: "POST",
-          url: `${Cypress.env("backendUrl")}/api/login`,
-          body: {
-            username: "coala",
-            password: "bear",
-          },
-        }).then((response) => {
-          window.localStorage.setItem("loggedUserJson", JSON.stringify(response.body))
-        })
+        cy.login()
       })
 
       it("user can create new blog", () => {
@@ -67,21 +49,10 @@ describe("Blog app", () => {
 
       describe("with an existing blog", () => {
         beforeEach(() => {
-          cy.request({
-            method: "POST",
-            url: `${Cypress.env("backendUrl")}/api/blogs`,
-            headers: {
-              authorization: JSON.parse(window.localStorage.getItem("loggedUserJson")).token,
-            },
-            body: {
-              title: "this is an existing blog",
-              author: "teddy",
-              url: "http://i.exist/yeah",
-            },
-          })
+          cy.createBlog()
         })
 
-        it.only("user can like a blog", () => {
+        it("user can like a blog", () => {
           cy.visit("")
           cy.contains("this is an existing blog").as("theBlog")
 
@@ -98,6 +69,20 @@ describe("Blog app", () => {
 
           cy.get("@theBlog")
             .contains("likes 1")
+        })
+
+        it("user can deleta a blog they created", () => {
+          cy.visit("")
+          cy.contains("this is an existing blog")
+            .contains("remove")
+            .click()
+
+          cy.contains("this is an existing blog")
+            .should("not.exist")
+
+          cy.get("body")
+            .find("this is an existing blog")
+            .should("have.length", 0)
         })
       })
     })
