@@ -20,7 +20,7 @@ const BlogItem = ({
   const creator = blog.creator ? blog.creator.name : "unknown"
   const removeVisible = blog.creator.username === user.username ? {} : { display: "none" }
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog">
       {`${blog.title} by ${blog.author}`}
       <span style={viewDetails ? hide : show}>
         <button type="button" onClick={() => setViewDetails(true)}>view</button>

@@ -132,6 +132,24 @@ describe("Blog app", () => {
             cy.contains("this is blog created by someone else")
               .contains("remove").should("not.be.visible")
           })
+
+          it.only("blogs with most likes come first", () => {
+            cy.visit("")
+
+            cy.contains("this is an existing blog").as("blog")
+            cy.contains("this is blog created by someone else").as("otherBlog")
+
+            cy.get("@blog").contains("view").click()
+            cy.get("@blog").contains("like").click()
+
+            cy.get("@otherBlog").contains("view").click()
+            cy.get("@otherBlog").contains("like").click().click()
+
+            cy.contains("most likes first").click()
+
+            cy.get(".blog").eq(0).contains("this is blog created by someone else")
+            cy.get(".blog").eq(1).contains("this is an existing blog")
+          })
         })
       })
     })
