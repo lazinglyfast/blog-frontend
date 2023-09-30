@@ -68,5 +68,4 @@ describe("<BlogItem />", () => {
     await user.click(like)
     expect(handleUpdate.mock.calls).toHaveLength(2)
   })
-
 })

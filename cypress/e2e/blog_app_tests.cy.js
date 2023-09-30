@@ -12,7 +12,12 @@ describe("Blog app", () => {
 
   describe("with an existing user", () => {
     beforeEach(() => {
-      cy.createUser()
+      const user = {
+        name: "oswald",
+        username: "coala",
+        password: "bear",
+      }
+      cy.createUser(user)
     })
 
     it("User can successfully login with correct credentials", () => {
@@ -34,7 +39,12 @@ describe("Blog app", () => {
 
     describe("with a logged in user", () => {
       beforeEach(() => {
-        cy.login()
+        const user = {
+          username: "coala",
+          password: "bear",
+        }
+
+        cy.login(user)
       })
 
       it("user can create new blog", () => {
@@ -49,7 +59,12 @@ describe("Blog app", () => {
 
       describe("with an existing blog", () => {
         beforeEach(() => {
-          cy.createBlog()
+          const blog = {
+            title: "this is an existing blog",
+            author: "teddy",
+            url: "http://i.exist/yeah",
+          }
+          cy.createBlog(blog)
         })
 
         it("user can like a blog", () => {
@@ -83,6 +98,40 @@ describe("Blog app", () => {
           cy.get("body")
             .find("this is an existing blog")
             .should("have.length", 0)
+        })
+
+        describe("with a blog created by a second user", () => {
+          beforeEach(() => {
+            const user = {
+              name: "alfred",
+              username: "panda",
+              password: "bear",
+            }
+            cy.createUser(user)
+            cy.login({
+              username: "panda",
+              password: "bear",
+            })
+
+            const blog = {
+              title: "this is blog created by someone else",
+              author: "panda",
+              url: "http://i.exist/other_yeah",
+            }
+
+            cy.createBlog(blog)
+
+            cy.login({
+              username: "coala",
+              password: "bear",
+            })
+          })
+
+          it("remove button is not visible for blogs that do not belong to user", () => {
+            cy.visit("")
+            cy.contains("this is blog created by someone else")
+              .contains("remove").should("not.be.visible")
+          })
         })
       })
     })

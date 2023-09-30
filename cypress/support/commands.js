@@ -23,25 +23,17 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-Cypress.Commands.add("login", () => {
+Cypress.Commands.add("login", (user) => {
   cy.request({
     method: "POST",
     url: `${Cypress.env("backendUrl")}/api/login`,
-    body: {
-      username: "coala",
-      password: "bear",
-    },
+    body: user,
   }).then((response) => {
     window.localStorage.setItem("loggedUserJson", JSON.stringify(response.body))
   })
 })
 
-Cypress.Commands.add("createUser", () => {
-  const user = {
-    name: "oswald",
-    username: "coala",
-    password: "bear",
-  }
+Cypress.Commands.add("createUser", (user) => {
   cy.request({
     method: "POST",
     url: `${Cypress.env("backendUrl")}/api/users`,
@@ -49,17 +41,13 @@ Cypress.Commands.add("createUser", () => {
   })
 })
 
-Cypress.Commands.add("createBlog", () => {
+Cypress.Commands.add("createBlog", (blog) => {
   cy.request({
     method: "POST",
     url: `${Cypress.env("backendUrl")}/api/blogs`,
     headers: {
       authorization: JSON.parse(window.localStorage.getItem("loggedUserJson")).token,
     },
-    body: {
-      title: "this is an existing blog",
-      author: "teddy",
-      url: "http://i.exist/yeah",
-    },
+    body: blog,
   })
 })

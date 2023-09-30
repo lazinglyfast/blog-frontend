@@ -36,6 +36,7 @@ const LoggedIn = ({
       <button type="button" onClick={() => setAscending(!ascending)}>{label}</button>
 
       <BlogList
+        user={user}
         blogs={sortedBlogs}
         handleUpdate={handleUpdate}
         handleRemove={handleRemove}
