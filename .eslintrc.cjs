@@ -8,6 +8,7 @@ module.exports = {
     browser: true,
     es2021: true,
     "jest/globals": true,
+    "cypress/globals": true,
   },
   extends: [
     "airbnb",
@@ -35,7 +36,7 @@ module.exports = {
     sourceType: "module",
   },
   settings: { react: { version: "18.2" } },
-  plugins: ["react-refresh", "jest"],
+  plugins: ["react-refresh", "jest", "cypress"],
   rules: {
     // "react/prop-types": "off",
     semi: ["error", "never"],
