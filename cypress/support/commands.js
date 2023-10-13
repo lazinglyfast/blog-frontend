@@ -46,7 +46,8 @@ Cypress.Commands.add("createBlog", (blog) => {
     method: "POST",
     url: `${Cypress.env("backendUrl")}/api/blogs`,
     headers: {
-      authorization: JSON.parse(window.localStorage.getItem("loggedUserJson")).token,
+      authorization: JSON.parse(window.localStorage.getItem("loggedUserJson"))
+        .token,
     },
     body: blog,
   })

@@ -33,8 +33,11 @@ describe("Blog app", () => {
       cy.get("#username").type("coala")
       cy.get("#password").type("this is not my password")
       cy.contains("login").click()
-      cy.contains("Invalid username and/or password")
-        .should("have.css", "color", "rgb(255, 0, 0)")
+      cy.contains("Invalid username and/or password").should(
+        "have.css",
+        "color",
+        "rgb(255, 0, 0)",
+      )
     })
 
     describe("with a logged in user", () => {
@@ -71,29 +74,20 @@ describe("Blog app", () => {
           cy.visit("")
           cy.contains("this is an existing blog").as("theBlog")
 
-          cy.get("@theBlog")
-            .contains("view")
-            .click()
+          cy.get("@theBlog").contains("view").click()
 
-          cy.get("@theBlog")
-            .contains("likes 0")
+          cy.get("@theBlog").contains("likes 0")
 
-          cy.get("@theBlog")
-            .contains("like")
-            .click()
+          cy.get("@theBlog").contains("like").click()
 
-          cy.get("@theBlog")
-            .contains("likes 1")
+          cy.get("@theBlog").contains("likes 1")
         })
 
         it("user can deleta a blog they created", () => {
           cy.visit("")
-          cy.contains("this is an existing blog")
-            .contains("remove")
-            .click()
+          cy.contains("this is an existing blog").contains("remove").click()
 
-          cy.contains("this is an existing blog")
-            .should("not.exist")
+          cy.contains("this is an existing blog").should("not.exist")
 
           cy.get("body")
             .find("this is an existing blog")
@@ -130,7 +124,8 @@ describe("Blog app", () => {
           it("remove button is not visible for blogs that do not belong to user", () => {
             cy.visit("")
             cy.contains("this is blog created by someone else")
-              .contains("remove").should("not.be.visible")
+              .contains("remove")
+              .should("not.be.visible")
           })
 
           it.only("blogs with most likes come first", () => {
@@ -147,7 +142,9 @@ describe("Blog app", () => {
 
             cy.contains("most likes first").click()
 
-            cy.get(".blog").eq(0).contains("this is blog created by someone else")
+            cy.get(".blog")
+              .eq(0)
+              .contains("this is blog created by someone else")
             cy.get(".blog").eq(1).contains("this is an existing blog")
           })
         })

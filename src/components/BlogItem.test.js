@@ -17,11 +17,13 @@ beforeEach(() => {
     },
   }
 
-  render(<BlogItem
-    blog={blog}
-    handleUpdate={handleUpdate}
-    handleRemove={handleRemove}
-  />)
+  render(
+    <BlogItem
+      blog={blog}
+      handleUpdate={handleUpdate}
+      handleRemove={handleRemove}
+    />,
+  )
 })
 
 describe("<BlogItem />", () => {

@@ -21,19 +21,21 @@ const LoggedIn = ({
   const label = ascending ? "most likes first" : "least likes first"
   return (
     <div>
-      <h2>
-        blogs
-      </h2>
+      <h2>blogs</h2>
       <div>
         {`${user.username} logged in`}
-        <button type="button" onClick={handleLogout}>logout</button>
+        <button type="button" onClick={handleLogout}>
+          logout
+        </button>
       </div>
 
       <Toggleable buttonLabel="create new blog" ref={toggleableRef}>
         <BlogForm handleCreate={handleCreate} />
       </Toggleable>
 
-      <button type="button" onClick={() => setAscending(!ascending)}>{label}</button>
+      <button type="button" onClick={() => setAscending(!ascending)}>
+        {label}
+      </button>
 
       <BlogList
         user={user}
@@ -50,15 +52,17 @@ LoggedIn.propTypes = {
     username: PropTypes.string,
   }).isRequired,
   handleLogout: PropTypes.func.isRequired,
-  blogs: PropTypes.arrayOf(PropTypes.shape({
-    title: PropTypes.string,
-    url: PropTypes.string,
-    likes: PropTypes.number,
-    author: PropTypes.string,
-    creator: PropTypes.shape({
-      name: PropTypes.string,
+  blogs: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string,
+      url: PropTypes.string,
+      likes: PropTypes.number,
+      author: PropTypes.string,
+      creator: PropTypes.shape({
+        name: PropTypes.string,
+      }),
     }),
-  })).isRequired,
+  ).isRequired,
   handleCreate: PropTypes.func.isRequired,
   handleUpdate: PropTypes.func.isRequired,
   handleRemove: PropTypes.func.isRequired,

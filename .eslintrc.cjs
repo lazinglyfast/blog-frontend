@@ -1,6 +1,5 @@
 module.exports = {
-  rules: {
-  },
+  rules: {},
 }
 module.exports = {
   root: true,
@@ -23,9 +22,7 @@ module.exports = {
       env: {
         node: true,
       },
-      files: [
-        ".eslintrc.{js,cjs}",
-      ],
+      files: [".eslintrc.{js,cjs}"],
       parserOptions: {
         sourceType: "script",
       },
@@ -42,18 +39,24 @@ module.exports = {
     semi: ["error", "never"],
     quotes: ["error", "double"],
     // "func-style": ["error", "declaration", { allowArrowFunctions: true }],
-    "react/function-component-definition": ["error", {
-      namedComponents: "arrow-function",
-      unnamedComponents: "arrow-function",
-    }],
+    "react/function-component-definition": [
+      "error",
+      {
+        namedComponents: "arrow-function",
+        unnamedComponents: "arrow-function",
+      },
+    ],
     indent: ["error", 2],
     "linebreak-style": ["error", "unix"],
     eqeqeq: "error",
     "no-trailing-spaces": "error",
     "object-curly-spacing": ["error", "always"],
-    "arrow-spacing": ["error", { "before": true, "after": true }],
+    "arrow-spacing": ["error", { before: true, after: true }],
     "react/react-in-jsx-scope": "off",
-    "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react-refresh/only-export-components": [
+      "warn",
+      { allowConstantExport: true },
+    ],
+    "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx"] }],
   },
 }

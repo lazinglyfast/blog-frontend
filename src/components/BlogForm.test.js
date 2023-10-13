@@ -6,9 +6,7 @@ import BlogForm from "./BlogForm"
 const handleCreate = jest.fn()
 
 beforeEach(() => {
-  render(<BlogForm
-    handleCreate={handleCreate}
-  />)
+  render(<BlogForm handleCreate={handleCreate} />)
 })
 
 describe("<BlogForm />", () => {
