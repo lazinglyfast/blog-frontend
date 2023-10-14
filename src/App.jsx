@@ -1,18 +1,28 @@
 import { React, useState, useEffect, useRef } from "react"
+import { useSelector, useDispatch } from "react-redux"
 import LoggedOut from "./components/LoggedOut"
 import LoggedIn from "./components/LoggedIn"
 import Notification from "./components/Notification"
 import loginService from "./services/login"
 import blogService from "./services/blog"
 import "./index.css"
+import {
+  setAllBlogs,
+  createBlog,
+  updateBlog,
+  removeBlog,
+} from "./reducers/blog"
+import { setUser, unsetUser } from "./reducers/user"
 
 const TIMEOUT = 5000
 
 const App = () => {
+  const user = useSelector((state) => state.user)
+  const blogs = useSelector((state) => state.blogs)
+
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [user, setUser] = useState(null)
-  const [blogs, setBlogs] = useState([])
+  const dispatch = useDispatch()
   const [message, setMessage] = useState(null)
 
   const runOnlyOnceAtApplicationStart = []
@@ -21,18 +31,14 @@ const App = () => {
     const loggedUserJson = window.localStorage.getItem("loggedUserJson")
     if (loggedUserJson) {
       const loggedUser = JSON.parse(loggedUserJson)
-      setUser(loggedUser)
+      dispatch(setUser(loggedUser))
     }
   }, runOnlyOnceAtApplicationStart)
 
   useEffect(() => {
-    const dummy = async () => {
-      const blogsFromServer = await blogService.list()
-      if (blogsFromServer) {
-        setBlogs(blogsFromServer)
-      }
-    }
-    dummy()
+    blogService.list().then((blogsList) => {
+      dispatch(setAllBlogs(blogsList))
+    })
   }, runOnlyOnceAtApplicationStart)
 
   const notify = (notification) => {
@@ -44,25 +50,25 @@ const App = () => {
     try {
       const loggedUser = await loginService.login({ username, password })
       window.localStorage.setItem("loggedUserJson", JSON.stringify(loggedUser))
-      setUser(loggedUser)
+      dispatch(setUser(loggedUser))
       notify({ text: "logged in successfully", type: "success" })
     } catch (exception) {
       window.localStorage.removeItem("loggedUserJson")
-      setUser(null)
+      dispatch(unsetUser())
       notify({ text: "Invalid username and/or password", type: "error" })
     }
   }
 
   const handleLogout = () => {
     window.localStorage.removeItem("loggedUserJson")
-    setUser(null)
+    dispatch(unsetUser())
     notify({ text: "logged out successfully", type: "success" })
   }
 
   const toggleableRef = useRef()
   const handleCreate = async (blog) => {
     const newBlog = await blogService.create(blog, user)
-    setBlogs(blogs.concat(newBlog))
+    dispatch(createBlog(newBlog))
     notify({
       text: `a new blog "${newBlog.title}" by "${newBlog.author}" added`,
       type: "success",
@@ -72,18 +78,14 @@ const App = () => {
 
   const handleUpdate = async (blog) => {
     try {
-      const temp = {
+      const blogToUpdate = {
         ...blog,
         likes: blog.likes + 1,
       }
-      const updatedBlog = await blogService.update(temp)
-      const updatedBlogs = blogs.map((b) => {
-        if (b.id === blog.id) {
-          return { ...b, likes: updatedBlog.likes }
-        }
-        return b
-      })
-      setBlogs(updatedBlogs)
+      console.log(blog)
+      console.log(blogToUpdate)
+      const updatedBlog = await blogService.update(blogToUpdate)
+      dispatch(updateBlog(updatedBlog))
     } catch (exception) {
       let text = exception.response.data.error
       if (!text) {
@@ -102,8 +104,7 @@ const App = () => {
 
     try {
       await blogService.remove(blog, user)
-      const filteredBlogs = blogs.filter((b) => b.id !== blog.id)
-      setBlogs(filteredBlogs)
+      dispatch(removeBlog(blog))
     } catch (exception) {
       let text = exception.response.data.error
       if (!text) {

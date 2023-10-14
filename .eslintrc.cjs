@@ -11,6 +11,8 @@ module.exports = {
   },
   extends: [
     "airbnb",
+    // npm i eslint-config-prettier
+    "prettier",
     // "eslint:recommended",
     // "plugin:react/recommended",
     // "plugin:react/jsx-runtime",
@@ -46,7 +48,7 @@ module.exports = {
         unnamedComponents: "arrow-function",
       },
     ],
-    indent: ["error", 2],
+    indent: ["error", 2, { SwitchCase: 1 }],
     "linebreak-style": ["error", "unix"],
     eqeqeq: "error",
     "no-trailing-spaces": "error",

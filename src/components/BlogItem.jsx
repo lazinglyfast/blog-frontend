@@ -1,7 +1,10 @@
 import { React, useState } from "react"
 import PropTypes from "prop-types"
+import { useDispatch } from "react-redux"
+import { updateBlog } from "../reducers/blog"
 
 const BlogItem = ({ user, blog, handleUpdate, handleRemove }) => {
+  const dispatch = useDispatch()
   const [viewDetails, setViewDetails] = useState(false)
   const blogStyle = {
     padding: 10,
@@ -16,6 +19,20 @@ const BlogItem = ({ user, blog, handleUpdate, handleRemove }) => {
   const creatorUsername = blog.creator ? blog.creator.username : "unknown"
   const removeVisible =
     creatorUsername === user.username ? {} : { display: "none" }
+
+  // const handleUpdate = async (blogToUpdate) => {
+  //   try {
+  //     dispatch(updateBlog(blogToUpdate))
+  //   } catch (exception) {
+  //     console.log(exception)
+  //     let text = exception.response.data.error
+  //     if (!text) {
+  //       text = "internal server error"
+  //     }
+  //     // notify({ text, type: "error" })
+  //   }
+  // }
+
   return (
     <div style={blogStyle} className="blog">
       {`${blog.title} by ${blog.author}`}
@@ -67,7 +84,6 @@ BlogItem.propTypes = {
       name: PropTypes.string,
     }),
   }).isRequired,
-  handleUpdate: PropTypes.func.isRequired,
   handleRemove: PropTypes.func.isRequired,
 }
 
