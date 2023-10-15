@@ -1,7 +1,11 @@
 import { React, useState } from "react"
-import PropTypes from "prop-types"
+import { useSelector, useDispatch } from "react-redux"
+import { createBlog } from "../reducers/blog"
+import { notifySuccess } from "../reducers/notification"
 
-const BlogForm = ({ handleCreate }) => {
+const BlogForm = ({ toggleableRef }) => {
+  const user = useSelector((state) => state.user)
+  const dispatch = useDispatch()
   const [title, setTitle] = useState(null)
   const [author, setAuthor] = useState(null)
   const [url, setUrl] = useState(null)
@@ -11,6 +15,13 @@ const BlogForm = ({ handleCreate }) => {
     author,
     url,
     likes: 0,
+  }
+
+  const handleCreate = async () => {
+    dispatch(createBlog(blog, user))
+    const message = `a new blog "${blog.title}" by "${blog.author}" added`
+    dispatch(notifySuccess(message))
+    toggleableRef.current.hide()
   }
 
   return (
@@ -52,7 +63,4 @@ const BlogForm = ({ handleCreate }) => {
   )
 }
 
-BlogForm.propTypes = {
-  handleCreate: PropTypes.func.isRequired,
-}
 export default BlogForm

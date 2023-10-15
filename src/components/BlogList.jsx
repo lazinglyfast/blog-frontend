@@ -1,38 +1,26 @@
-import React from "react"
-import PropTypes from "prop-types"
+import React, { useState, useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
 import BlogItem from "./BlogItem"
+import { sortBlogs } from "../reducers/blog"
 
-const BlogList = ({ user, blogs, handleUpdate, handleRemove }) => {
-  const items = blogs.map((b) => (
-    <BlogItem
-      user={user}
-      key={b.id}
-      blog={b}
-      handleUpdate={handleUpdate}
-      handleRemove={handleRemove}
-    />
-  ))
+const BlogList = () => {
+  const dispatch = useDispatch()
+  const [ascending, setAscending] = useState(true)
+  const blogs = useSelector((state) => state.blogs)
+  const items = blogs.map((b) => <BlogItem key={b.id} blog={b} />)
 
-  return <div>{items}</div>
-}
+  useEffect(() => {
+    dispatch(sortBlogs(ascending))
+  }, [ascending])
 
-BlogList.propTypes = {
-  user: PropTypes.shape({
-    username: PropTypes.string,
-  }).isRequired,
-  blogs: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string,
-      url: PropTypes.string,
-      likes: PropTypes.number,
-      author: PropTypes.string,
-      creator: PropTypes.shape({
-        name: PropTypes.string,
-      }),
-    }),
-  ).isRequired,
-  handleUpdate: PropTypes.func.isRequired,
-  handleRemove: PropTypes.func.isRequired,
+  return (
+    <div>
+      <button type="button" onClick={() => setAscending(!ascending)}>
+        {ascending ? "most likes first" : "least likes first"}
+      </button>
+      {items}
+    </div>
+  )
 }
 
 export default BlogList

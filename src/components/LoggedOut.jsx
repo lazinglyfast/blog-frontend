@@ -1,39 +1,30 @@
 import React from "react"
-import PropTypes from "prop-types"
+import { useDispatch } from "react-redux"
+import useField from "../hooks"
+import { login } from "../reducers/user"
 
-const LoggedOut = ({ setUsername, setPassword, handleLogin }) => (
-  <>
-    <div>
+const LoggedOut = () => {
+  const dispatch = useDispatch()
+  const username = useField("username", "text")
+  const password = useField("password", "password")
+
+  return (
+    <>
       <h2>log in to the application</h2>
-      <label htmlFor="username">
-        username
-        <input
-          id="username"
-          type="text"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </label>
-    </div>
-    <div>
-      <label htmlFor="password">
-        password
-        <input
-          id="password"
-          type="password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </label>
-    </div>
-    <button type="button" onClick={handleLogin}>
-      login
-    </button>
-  </>
-)
-
-LoggedOut.propTypes = {
-  setUsername: PropTypes.func.isRequired,
-  setPassword: PropTypes.func.isRequired,
-  handleLogin: PropTypes.func.isRequired,
+      <div>
+        username: <input {...username} />
+      </div>
+      <div>
+        password: <input {...password} />
+      </div>
+      <button
+        type="button"
+        onClick={() => dispatch(login(username.value, password.value))}
+      >
+        login
+      </button>
+    </>
+  )
 }
 
 export default LoggedOut
