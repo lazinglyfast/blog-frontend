@@ -1,10 +1,15 @@
 import { React, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { likeBlog, deleteBlog } from "../reducers/blog"
-import { notifyError, notifySuccess } from "../reducers/notification"
+import {
+  useNotificationDispatch,
+  notifySuccess,
+  notifyError,
+} from "./NotificationContext"
 
 const BlogItem = ({ blog }) => {
   const dispatch = useDispatch()
+  const dispatchNotification = useNotificationDispatch()
   const user = useSelector((state) => state.user)
   const [viewDetails, setViewDetails] = useState(false)
   const blogStyle = {
@@ -27,7 +32,7 @@ const BlogItem = ({ blog }) => {
       if (!text) {
         text = "internal server error"
       }
-      dispatch(notifyError(text))
+      notifyError(dispatchNotification, text)
     }
   }
 
@@ -40,13 +45,14 @@ const BlogItem = ({ blog }) => {
 
     try {
       dispatch(deleteBlog(blog, user))
-      dispatch(notifySuccess(`removed ${blog.title}`))
+      const text = `removed ${blog.title}`
+      notifySuccess(dispatchNotification, text)
     } catch (exception) {
       let text = exception.response.data.error
       if (!text) {
         text = "internal server error"
       }
-      dispatch(notifyError(text))
+      notifyError(dispatchNotification, text)
     }
   }
 

@@ -1,11 +1,12 @@
 import { React, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { createBlog } from "../reducers/blog"
-import { notifySuccess } from "../reducers/notification"
+import { useNotificationDispatch, notifySuccess } from "./NotificationContext"
 
 const BlogForm = ({ toggleableRef }) => {
-  const user = useSelector((state) => state.user)
   const dispatch = useDispatch()
+  const dispatchNotification = useNotificationDispatch()
+  const user = useSelector((state) => state.user)
   const [title, setTitle] = useState(null)
   const [author, setAuthor] = useState(null)
   const [url, setUrl] = useState(null)
@@ -19,8 +20,8 @@ const BlogForm = ({ toggleableRef }) => {
 
   const handleCreate = async () => {
     dispatch(createBlog(blog, user))
-    const message = `a new blog "${blog.title}" by "${blog.author}" added`
-    dispatch(notifySuccess(message))
+    const text = `a new blog "${blog.title}" by "${blog.author}" added`
+    notifySuccess(dispatchNotification, text)
     toggleableRef.current.hide()
   }
 

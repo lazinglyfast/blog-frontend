@@ -4,10 +4,17 @@ import Toggleable from "./Toggleable"
 import BlogForm from "./BlogForm"
 import BlogList from "./BlogList"
 import { logout } from "../reducers/user"
+import { useNotificationDispatch, notifySuccess } from "./NotificationContext"
 
 const LoggedIn = () => {
   const dispatch = useDispatch()
+  const dispatchNotification = useNotificationDispatch()
   const user = useSelector((state) => state.user)
+
+  const handleClick = () => {
+    dispatch(logout())
+    notifySuccess(dispatchNotification, "logged out successfully")
+  }
 
   const toggleableRef = useRef()
 
@@ -16,7 +23,7 @@ const LoggedIn = () => {
       <h2>blogs</h2>
       <div>
         {`${user.username} logged in`}
-        <button type="button" onClick={() => dispatch(logout())}>
+        <button type="button" onClick={handleClick}>
           logout
         </button>
       </div>
