@@ -1,11 +1,8 @@
-import { useParams } from "react-router-dom"
-import { useQueryClient } from "@tanstack/react-query"
+const UserDetails = ({ user }) => {
+  if (!user) {
+    return <div />
+  }
 
-const UserDetails = () => {
-  const { id } = useParams()
-  const client = useQueryClient()
-  const users = client.getQueryData(["users"])
-  const user = users.find((u) => u.id === id)
   return (
     <div>
       <h2> {user.name} </h2>

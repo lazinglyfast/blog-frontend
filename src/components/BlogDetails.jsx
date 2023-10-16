@@ -1,6 +1,6 @@
 import React from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import {
   useNotificationDispatch,
   notifySuccess,
@@ -9,11 +9,12 @@ import {
 import blogService from "../services/blog"
 import { useUser } from "./UserContext"
 
-const BlogDetails = () => {
-  const { id } = useParams()
+const BlogDetails = ({ blog }) => {
+  if (!blog) {
+    return <div />
+  }
+
   const client = useQueryClient()
-  const allBlogs = client.getQueryData(["blogs"])
-  const blog = allBlogs.find((b) => b.id === id)
   const user = useUser()
   const dispatchNotification = useNotificationDispatch()
   const creator = blog.creator ? blog.creator.username : "unknown"

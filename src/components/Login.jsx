@@ -1,4 +1,5 @@
 import React from "react"
+import { useNavigate } from "react-router-dom"
 import useField from "../hooks"
 import loginService from "../services/login"
 import { useUserDispatch, storeUser, clearUser } from "./UserContext"
@@ -8,7 +9,8 @@ import {
   notifyError,
 } from "./NotificationContext"
 
-const LoggedOut = () => {
+const Login = () => {
+  const navigate = useNavigate()
   const dispatchUser = useUserDispatch()
   const dispatchNotification = useNotificationDispatch()
   const username = useField("username", "text")
@@ -21,6 +23,7 @@ const LoggedOut = () => {
         password: password.value,
       })
       storeUser(dispatchUser, user)
+      navigate("/")
       const text = `${user.username} logged in successfully`
       notifySuccess(dispatchNotification, text)
     } catch (exception) {
@@ -46,4 +49,4 @@ const LoggedOut = () => {
   )
 }
 
-export default LoggedOut
+export default Login
