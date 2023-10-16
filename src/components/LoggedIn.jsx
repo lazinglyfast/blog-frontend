@@ -2,6 +2,7 @@ import React from "react"
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom"
 import Blogs from "./Blogs"
 import Users from "./Users"
+import UserDetails from "./UserDetails"
 import { useUser, useUserDispatch, clearUser } from "./UserContext"
 import { useNotificationDispatch, notifySuccess } from "./NotificationContext"
 
@@ -37,6 +38,7 @@ const LoggedIn = () => {
       <Routes>
         <Route path="/" element={<Blogs />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/users/:id" element={<UserDetails />} />
       </Routes>
     </Router>
   )
