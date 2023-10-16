@@ -15,20 +15,19 @@ const LoggedOut = () => {
   const password = useField("password", "password")
 
   const onClick = async () => {
-    // try {
-    const user = await loginService.login({
-      username: username.value,
-      password: password.value,
-    })
-    console.log(dispatchUser)
-    storeUser(dispatchUser, user)
-    const text = `${user.username} logged in successfully`
-    notifySuccess(dispatchNotification, text)
-    // } catch (exception) {
-    //   clearUser(dispatchUser)
-    //   const text = "Invalid username and/or password"
-    //   notifyError(dispatchNotification, text)
-    // }
+    try {
+      const user = await loginService.login({
+        username: username.value,
+        password: password.value,
+      })
+      storeUser(dispatchUser, user)
+      const text = `${user.username} logged in successfully`
+      notifySuccess(dispatchNotification, text)
+    } catch (exception) {
+      clearUser(dispatchUser)
+      const text = "Invalid username and/or password"
+      notifyError(dispatchNotification, text)
+    }
   }
 
   return (

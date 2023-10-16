@@ -1,7 +1,7 @@
-import React, { useRef } from "react"
-import Toggleable from "./Toggleable"
-import BlogForm from "./BlogForm"
-import BlogList from "./BlogList"
+import React from "react"
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom"
+import Blogs from "./Blogs"
+import Users from "./Users"
 import { useUser, useUserDispatch, clearUser } from "./UserContext"
 import { useNotificationDispatch, notifySuccess } from "./NotificationContext"
 
@@ -15,23 +15,30 @@ const LoggedIn = () => {
     notifySuccess(dispatchNotification, "logged out successfully")
   }
 
-  const toggleableRef = useRef()
+  const style = {
+    padding: 5,
+  }
 
   return (
-    <div>
-      <h2>blogs</h2>
+    <Router>
       <div>
+        <Link style={style} to="/">
+          blogs
+        </Link>
+        <Link style={style} to="/users">
+          users
+        </Link>
         {`${user.username} logged in`}
         <button type="button" onClick={handleClick}>
           logout
         </button>
       </div>
 
-      <Toggleable buttonLabel="create new blog" ref={toggleableRef}>
-        <BlogForm toggleableRef={toggleableRef} />
-      </Toggleable>
-      <BlogList />
-    </div>
+      <Routes>
+        <Route path="/" element={<Blogs />} />
+        <Route path="/users" element={<Users />} />
+      </Routes>
+    </Router>
   )
 }
 
