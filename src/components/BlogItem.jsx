@@ -1,16 +1,16 @@
 import { React, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { likeBlog, deleteBlog } from "../reducers/blog"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import {
   useNotificationDispatch,
   notifySuccess,
   notifyError,
 } from "./NotificationContext"
+import blogService from "../services/blog"
+import { useUser } from "./UserContext"
 
 const BlogItem = ({ blog }) => {
-  const dispatch = useDispatch()
+  const user = useUser()
   const dispatchNotification = useNotificationDispatch()
-  const user = useSelector((state) => state.user)
   const [viewDetails, setViewDetails] = useState(false)
   const blogStyle = {
     padding: 10,
@@ -24,17 +24,47 @@ const BlogItem = ({ blog }) => {
   const creator = blog.creator ? blog.creator.username : "unknown"
   const removeVisible = creator === user.username ? {} : { display: "none" }
 
-  const handleLike = async () => {
-    try {
-      dispatch(likeBlog(blog))
-    } catch (exception) {
-      let text = exception.response.data.error
-      if (!text) {
-        text = "internal server error"
+  const client = useQueryClient()
+
+  const likeBlogMutation = useMutation({
+    mutationFn: async (blogToMutate) => {
+      const blogToUpdate = {
+        ...blogToMutate,
+        likes: blogToMutate.likes + 1,
       }
+      return await blogService.update(blogToUpdate)
+    },
+    onSuccess: (updatedBlog) => {
+      const blogs = client.getQueryData(["blogs"])
+      const updatedBlogs = blogs.map((b) =>
+        b.id === updatedBlog.id ? updatedBlog : b,
+      )
+      client.setQueryData(["blogs"], updatedBlogs)
+    },
+    onError: () => {
+      const text = "internal server error"
       notifyError(dispatchNotification, text)
-    }
-  }
+    },
+  })
+
+  const removeBlogMutation = useMutation({
+    mutationFn: async (blogToMutate) => {
+      await blogService.remove(blogToMutate, user)
+      return blogToMutate
+    },
+    onSuccess: (mutatedBlog) => {
+      const oldBlogs = client.getQueryData(["blogs"])
+      const blogs = oldBlogs.filter((b) => b.id !== mutatedBlog.id)
+      client.setQueryData(["blogs"], blogs)
+
+      const text = `removed ${mutatedBlog.title}`
+      notifySuccess(dispatchNotification, text)
+    },
+    onError: () => {
+      const text = "internal server error"
+      notifyError(dispatchNotification, text)
+    },
+  })
 
   const handleRemove = async () => {
     const warning = `Are you sure you want to remove "${blog.title}" by ${blog.author}?`
@@ -43,17 +73,7 @@ const BlogItem = ({ blog }) => {
       return
     }
 
-    try {
-      dispatch(deleteBlog(blog, user))
-      const text = `removed ${blog.title}`
-      notifySuccess(dispatchNotification, text)
-    } catch (exception) {
-      let text = exception.response.data.error
-      if (!text) {
-        text = "internal server error"
-      }
-      notifyError(dispatchNotification, text)
-    }
+    removeBlogMutation.mutate(blog)
   }
 
   return (
@@ -74,7 +94,7 @@ const BlogItem = ({ blog }) => {
           <button
             type="button"
             className="like"
-            onClick={() => handleLike(blog)}
+            onClick={() => likeBlogMutation.mutate(blog)}
           >
             like
           </button>

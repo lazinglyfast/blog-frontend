@@ -1,25 +1,34 @@
-import React, { useState, useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import React, { useState } from "react"
+import { useQuery } from "@tanstack/react-query"
 import BlogItem from "./BlogItem"
-import { sortBlogs } from "../reducers/blog"
+import blogService from "../services/blog"
 
 const BlogList = () => {
-  const dispatch = useDispatch()
   const [ascending, setAscending] = useState(true)
-  const blogs = useSelector((state) => state.blogs)
+  const query = useQuery({
+    queryKey: ["blogs"],
+    queryFn: blogService.list,
+  })
+
+  if (query.isLoading) {
+    return <div>Loading...</div>
+  }
+
+  const blogs = query.data
+
+  blogs.sort((ba, bb) => bb.likes - ba.likes)
+  if (ascending) {
+    blogs.reverse()
+  }
   const items = blogs.map((b) => <BlogItem key={b.id} blog={b} />)
 
-  useEffect(() => {
-    dispatch(sortBlogs(ascending))
-  }, [ascending])
-
   return (
-    <div>
+    <>
       <button type="button" onClick={() => setAscending(!ascending)}>
         {ascending ? "most likes first" : "least likes first"}
       </button>
-      {items}
-    </div>
+      <div>{items}</div>
+    </>
   )
 }
 

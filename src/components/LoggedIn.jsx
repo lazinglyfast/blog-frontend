@@ -1,18 +1,17 @@
 import React, { useRef } from "react"
-import { useSelector, useDispatch } from "react-redux"
 import Toggleable from "./Toggleable"
 import BlogForm from "./BlogForm"
 import BlogList from "./BlogList"
-import { logout } from "../reducers/user"
+import { useUser, useUserDispatch, clearUser } from "./UserContext"
 import { useNotificationDispatch, notifySuccess } from "./NotificationContext"
 
 const LoggedIn = () => {
-  const dispatch = useDispatch()
+  const user = useUser()
+  const dispatchUser = useUserDispatch()
   const dispatchNotification = useNotificationDispatch()
-  const user = useSelector((state) => state.user)
 
   const handleClick = () => {
-    dispatch(logout())
+    clearUser(dispatchUser)
     notifySuccess(dispatchNotification, "logged out successfully")
   }
 

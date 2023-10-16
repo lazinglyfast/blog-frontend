@@ -1,8 +1,7 @@
 import React from "react"
-import { useDispatch } from "react-redux"
 import useField from "../hooks"
 import loginService from "../services/login"
-import { setUser, unsetUser } from "../reducers/user"
+import { useUserDispatch, storeUser, clearUser } from "./UserContext"
 import {
   useNotificationDispatch,
   notifySuccess,
@@ -10,27 +9,26 @@ import {
 } from "./NotificationContext"
 
 const LoggedOut = () => {
-  const dispatch = useDispatch()
+  const dispatchUser = useUserDispatch()
   const dispatchNotification = useNotificationDispatch()
   const username = useField("username", "text")
   const password = useField("password", "password")
 
   const onClick = async () => {
-    try {
-      const user = await loginService.login({
-        username: username.value,
-        password: password.value,
-      })
-      window.localStorage.setItem("user", JSON.stringify(user))
-      dispatch(setUser(user))
-      const text = `${user.username} logged in successfully`
-      notifySuccess(dispatchNotification, text)
-    } catch (exception) {
-      window.localStorage.removeItem("user")
-      dispatch(unsetUser())
-      const text = "Invalid username and/or password"
-      notifyError(dispatchNotification, text)
-    }
+    // try {
+    const user = await loginService.login({
+      username: username.value,
+      password: password.value,
+    })
+    console.log(dispatchUser)
+    storeUser(dispatchUser, user)
+    const text = `${user.username} logged in successfully`
+    notifySuccess(dispatchNotification, text)
+    // } catch (exception) {
+    //   clearUser(dispatchUser)
+    //   const text = "Invalid username and/or password"
+    //   notifyError(dispatchNotification, text)
+    // }
   }
 
   return (

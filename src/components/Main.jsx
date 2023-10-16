@@ -1,22 +1,16 @@
-import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
 import LoggedOut from "./LoggedOut"
 import LoggedIn from "./LoggedIn"
-import { initBlogs } from "../reducers/blog"
-import { logbackin } from "../reducers/user"
+import { useUser, useUserDispatch, restoreUser } from "./UserContext"
 
 const Main = () => {
-  const user = useSelector((state) => state.user)
-  const dispatch = useDispatch()
+  const user = useUser()
+  const dispatchUser = useUserDispatch()
 
   const runOnlyOnceAtApplicationStart = []
 
   useEffect(() => {
-    dispatch(logbackin())
-  }, runOnlyOnceAtApplicationStart)
-
-  useEffect(() => {
-    dispatch(initBlogs())
+    restoreUser(dispatchUser)
   }, runOnlyOnceAtApplicationStart)
 
   return <div>{user ? <LoggedIn /> : <LoggedOut />}</div>

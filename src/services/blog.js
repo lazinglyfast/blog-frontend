@@ -3,8 +3,8 @@ import axios from "axios"
 const baseUrl = `http://localhost:${import.meta.env.VITE_PORT}/api/blogs`
 
 const list = async () => {
-  const response = await axios.get(baseUrl)
-  return response.data
+  const result = await axios.get(baseUrl)
+  return result.data
 }
 
 const create = async (blog, user) => {
@@ -13,13 +13,13 @@ const create = async (blog, user) => {
       authorization: user.token,
     },
   }
-  const response = await axios.post(baseUrl, blog, config)
-  return response.data
+  const result = await axios.post(baseUrl, blog, config)
+  return result.data
 }
 
 const update = async (blog) => {
-  const response = await axios.put(baseUrl, blog)
-  return response.data
+  const result = await axios.put(baseUrl, blog)
+  return result.data
 }
 
 const remove = async (blog, user) => {
