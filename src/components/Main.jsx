@@ -24,10 +24,6 @@ const Main = () => {
     notifySuccess(dispatchNotification, "logged out successfully")
   }
 
-  const style = {
-    padding: 5,
-  }
-
   const client = useQueryClient()
 
   const matchBlog = useMatch("/blogs/:id")
@@ -43,13 +39,23 @@ const Main = () => {
     : null
 
   // TODO: make the route redirect DRY
+
+  const crumbStyle = {
+    padding: 5,
+  }
+
+  const navStyle = {
+    backgroundColor: "grey",
+    padding: 5,
+  }
+
   return (
     <div>
-      <div>
-        <Link style={style} to="/">
+      <div style={navStyle}>
+        <Link style={crumbStyle} to="/">
           blogs
         </Link>
-        <Link style={style} to="/users">
+        <Link style={crumbStyle} to="/users">
           users
         </Link>
         {user ? `${user.username} logged in` : null}
