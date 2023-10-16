@@ -1,6 +1,7 @@
 import React from "react"
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom"
 import Blogs from "./Blogs"
+import BlogDetails from "./BlogDetails"
 import Users from "./Users"
 import UserDetails from "./UserDetails"
 import { useUser, useUserDispatch, clearUser } from "./UserContext"
@@ -39,6 +40,7 @@ const LoggedIn = () => {
         <Route path="/" element={<Blogs />} />
         <Route path="/users" element={<Users />} />
         <Route path="/users/:id" element={<UserDetails />} />
+        <Route path="/blogs/:id" element={<BlogDetails />} />
       </Routes>
     </Router>
   )
