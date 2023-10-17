@@ -4,7 +4,7 @@ import Notification from "./components/Notification"
 import Main from "./components/Main"
 
 const App = () => (
-  <div>
+  <div className="container">
     <Notification />
     <Main />
   </div>

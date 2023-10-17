@@ -1,6 +1,7 @@
 import React from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useNavigate } from "react-router-dom"
+import { Button } from "react-bootstrap"
 import {
   useNotificationDispatch,
   notifySuccess,
@@ -80,18 +81,23 @@ const BlogDetails = ({ blog }) => {
       <a href={blog.url}>{blog.url}</a>
       <div>
         {`likes ${blog.likes} `}
-        <button type="button" onClick={() => likeBlogMutation.mutate(blog)}>
+        <Button
+          variant="primary"
+          type="button"
+          onClick={() => likeBlogMutation.mutate(blog)}
+        >
           like
-        </button>
+        </Button>
       </div>
       <div>{`created by ${creator}`}</div>
-      <button
+      <Button
+        variant="primary"
         style={removeVisible}
         type="button"
         onClick={() => handleRemove(blog)}
       >
         remove
-      </button>
+      </Button>
       <Comments blog={blog} />
     </div>
   )

@@ -11,9 +11,13 @@ const BlogItem = ({ blog }) => {
   }
 
   return (
-    <div style={blogStyle} className="blog">
-      <Link to={`/blogs/${blog.id}`}>{`${blog.title} by ${blog.author}`}</Link>
-    </div>
+    <tr style={blogStyle} className="blog">
+      <td>
+        <Link
+          to={`/blogs/${blog.id}`}
+        >{`${blog.title} by ${blog.author}`}</Link>
+      </td>
+    </tr>
   )
 }
 

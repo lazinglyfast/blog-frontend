@@ -1,5 +1,6 @@
 import React from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { Button } from "react-bootstrap"
 import commentService from "../services/comment"
 import useField from "../hooks"
 
@@ -26,12 +27,13 @@ const CommentForm = ({ blog }) => {
   return (
     <div>
       <input {...content} />
-      <button
+      <Button
+        variant="primary"
         type="button"
         onClick={() => createCommentMutation.mutate(comment)}
       >
         add
-      </button>
+      </Button>
     </div>
   )
 }

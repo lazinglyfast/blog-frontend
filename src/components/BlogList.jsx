@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
+import { Table, Button } from "react-bootstrap"
 import BlogItem from "./BlogItem"
 import blogService from "../services/blog"
 
@@ -24,10 +25,16 @@ const BlogList = () => {
 
   return (
     <>
-      <button type="button" onClick={() => setAscending(!ascending)}>
+      <Button
+        variant="primary"
+        type="button"
+        onClick={() => setAscending(!ascending)}
+      >
         {ascending ? "most likes first" : "least likes first"}
-      </button>
-      <div>{items}</div>
+      </Button>
+      <Table striped>
+        <tbody>{items}</tbody>
+      </Table>
     </>
   )
 }

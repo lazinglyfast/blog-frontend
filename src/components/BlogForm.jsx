@@ -1,5 +1,6 @@
 import React from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { Form, Button } from "react-bootstrap"
 import {
   useNotificationDispatch,
   notifySuccess,
@@ -43,21 +44,25 @@ const BlogForm = ({ toggleableRef }) => {
     },
   })
 
+  const onSubmit = (e) => {
+    e.preventDefault()
+    createBlogMutation.mutate(blog)
+  }
+
   return (
-    <div data-testid="container">
-      <div>
-        Title: <input {...title} />
-      </div>
-      <div>
-        Author: <input {...author} />
-      </div>
-      <div>
-        Url: <input {...url} />
-      </div>
-      <button type="button" onClick={() => createBlogMutation.mutate(blog)}>
-        create
-      </button>
-    </div>
+    <Form onSubmit={onSubmit}>
+      <Form.Group>
+        <Form.Label>title:</Form.Label>
+        <Form.Control {...title} />
+        <Form.Label>author:</Form.Label>
+        <Form.Control {...author} />
+        <Form.Label>url:</Form.Label>
+        <Form.Control {...url} />
+        <Button variant="primary" type="submit">
+          create
+        </Button>
+      </Form.Group>
+    </Form>
   )
 }
 

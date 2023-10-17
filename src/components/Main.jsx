@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import { Route, Routes, Link, Navigate, useMatch } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query"
+import { Button, Navbar, Nav } from "react-bootstrap"
 import Blogs from "./Blogs"
 import BlogDetails from "./BlogDetails"
 import Users from "./Users"
@@ -49,18 +50,27 @@ const Main = () => {
 
   return (
     <div>
-      <div style={navStyle}>
-        <Link style={crumbStyle} to="/">
-          blogs
-        </Link>
-        <Link style={crumbStyle} to="/users">
-          users
-        </Link>
+      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link href="#" as="span">
+              <Link style={crumbStyle} to="/">
+                blogs
+              </Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              <Link style={crumbStyle} to="/users">
+                users
+              </Link>
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
         {user ? `${user.username} logged in` : null}
-        <button type="button" onClick={handleClick}>
+        <Button variant="primary" type="button" onClick={handleClick}>
           logout
-        </button>
-      </div>
+        </Button>
+      </Navbar>
 
       <Routes>
         <Route

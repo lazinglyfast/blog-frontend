@@ -1,5 +1,6 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
+import { Form, Button } from "react-bootstrap"
 import useField from "../hooks"
 import loginService from "../services/login"
 import { useUserDispatch, storeUser, clearUser } from "./UserContext"
@@ -16,7 +17,8 @@ const Login = () => {
   const username = useField("username", "text")
   const password = useField("password", "password")
 
-  const onClick = async () => {
+  const onSubmit = async (e) => {
+    e.preventDefault()
     try {
       const user = await loginService.login({
         username: username.value,
@@ -34,18 +36,18 @@ const Login = () => {
   }
 
   return (
-    <>
+    <Form onSubmit={onSubmit}>
       <h2>log in to the application</h2>
-      <div>
-        username: <input {...username} />
-      </div>
-      <div>
-        password: <input {...password} />
-      </div>
-      <button type="button" onClick={onClick}>
-        login
-      </button>
-    </>
+      <Form.Group>
+        <Form.Label>username:</Form.Label>
+        <Form.Control {...username} />
+        <Form.Label>password:</Form.Label>
+        <Form.Control {...password} />
+        <Button variant="primary" type="submit">
+          login
+        </Button>
+      </Form.Group>
+    </Form>
   )
 }
 
