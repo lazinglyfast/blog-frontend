@@ -8,6 +8,7 @@ import {
 } from "./NotificationContext"
 import blogService from "../services/blog"
 import { useUser } from "./UserContext"
+import Comments from "./Comments"
 
 const BlogDetails = ({ blog }) => {
   if (!blog) {
@@ -91,6 +92,7 @@ const BlogDetails = ({ blog }) => {
       >
         remove
       </button>
+      <Comments blog={blog} />
     </div>
   )
 }

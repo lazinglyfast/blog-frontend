@@ -28,15 +28,13 @@ const Main = () => {
 
   const matchBlog = useMatch("/blogs/:id")
   const blogs = client.getQueryData(["blogs"])
-  const matchedBlog = matchBlog
-    ? blogs.find((b) => b.id === matchBlog.params.id)
-    : null
+  const matchedBlog =
+    blogs && matchBlog ? blogs.find((b) => b.id === matchBlog.params.id) : null
 
   const matchUser = useMatch("/users/:id")
   const users = client.getQueryData(["users"])
-  const matchedUser = matchUser
-    ? users.find((u) => u.id === matchUser.params.id)
-    : null
+  const matchedUser =
+    users && matchUser ? users.find((u) => u.id === matchUser.params.id) : null
 
   // TODO: make the route redirect DRY
 
